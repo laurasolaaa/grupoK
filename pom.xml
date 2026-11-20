@@ -11,8 +11,8 @@
 	<groupId>com.example</groupId>
 	<artifactId>grupoK</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>grupoK</name>
+	<description>Laboratorio de GitHub con Spring Boot - GrupoK</description>
 	<url/>
 	<licenses>
 		<license/>
