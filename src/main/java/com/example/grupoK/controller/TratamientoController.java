@@ -3,6 +3,7 @@ package com.example.grupoK.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,5 +31,13 @@ public class TratamientoController {
     @GetMapping("/tratamientos")
     public List<Tratamiento> listarTratamientos() {
         return tratamientos;
+    }
+
+    @GetMapping("/tratamientos/{id}")
+    public Tratamiento obtenerTratamiento(@PathVariable int id) {
+        return tratamientos.stream()
+                .filter(t -> t.id() == id)
+                .findFirst()
+                .orElse(null);
     }
 }
