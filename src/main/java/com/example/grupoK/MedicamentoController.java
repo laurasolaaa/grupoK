@@ -1,6 +1,8 @@
 package com.example.grupoK;
 
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,22 +38,39 @@ public class MedicamentoController {
         }
     }
 
+    private List<FichaMedicamento> obtenerListaMedicamentos() {
+        return List.of(
+            new FichaMedicamento(
+                "Enalapril 10 mg",
+                "Indicado para el tratamiento de la hipertensión arterial y la insuficiencia cardíaca. Tomar 1 comprimido al día.",
+                "Mareos, tos seca persistente, fatiga o hipotensión.",
+                "Evitar suplementos de potasio, diuréticos ahorradores de potasio y AINEs como el ibuprofeno."
+            ),
+            new FichaMedicamento(
+                "Adiro 100 mg",
+                "Antiagregante plaquetario indicado para la prevención de eventos cardiovasculares. Tomar 1 comprimido al día tras la comida.",
+                "Molestias gastrointestinales, acidez o mayor tendencia al sangrado.",
+                "Precaución con anticoagulantes orales, corticoides y otros antiinflamatorios."
+            ),
+            new FichaMedicamento(
+                "Paracetamol",
+                "Analgésico y antipirético indicado para el alivio del dolor leve o moderado y estados febriles. Tomar 1 comprimido cada 8 horas si precisa.",
+                "Raros a dosis terapéuticas; hepatotoxicidad en caso de sobredosis.",
+                "Evitar el consumo de alcohol y otros medicamentos que contengan paracetamol."
+            )
+        );
+    }
+
     @GetMapping("/medicamentos")
-    public FichaMedicamento[] obtenerMedicamentos() {
-        FichaMedicamento med1 = new FichaMedicamento(
-            "Enalapril 10 mg",
-            "Indicado para el tratamiento de la hipertensión arterial y la insuficiencia cardíaca.",
-            "Mareos al levantarse, tos seca persistente y fatiga leve.",
-            "Evitar suplementos de potasio y antiinflamatorios como el ibuprofeno."
-        );
+    public List<FichaMedicamento> listarMedicamentos() {
+        return obtenerListaMedicamentos();
+    }
 
-        FichaMedicamento med2 = new FichaMedicamento(
-            "Adiro 100 mg",
-            "Antiagregante plaquetario utilizado para prevenir la formación de coágulos sanguíneos.",
-            "Acidez estomacal o molestias digestivas leves; tomar tras las comidas.",
-            "Aumenta el riesgo de sangrado si se combina con anticoagulantes como Sintrom."
-        );
-
-        return new FichaMedicamento[] { med1, med2 };
+    @GetMapping("/medicamentos/{nombre}")
+    public FichaMedicamento consultarMedicamentoPorNombre(@PathVariable String nombre) {
+        return obtenerListaMedicamentos().stream()
+            .filter(m -> m.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+            .findFirst()
+            .orElse(new FichaMedicamento(nombre, "Medicamento no encontrado en el sistema", "No disponible", "No disponible"));
     }
 }
